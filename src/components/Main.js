@@ -5,23 +5,23 @@ import Card from "./Card.js";
 
 function Main(props) {
 
-  const [userAvatar, setUserAvatar] = useState(null),
-    [userName, setUserName] = useState(null),
-    [userDescription, setUserDescription] = useState(null);
+  const [userName, setUserName] = useState(''),
+        [userDescription, setUserDescription] = useState(''),
+        [userAvatar, setUserAvatar] = useState('');
 
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    Promise.all([ api.getUserData(), api.getInitialCards() ])
+    Promise.all([api.getUserData(), api.getInitialCards()])
       .then(res => {
-        const [ userData, cardsArray ] = res
+        const [userData, cardsArray] = res
         setUserAvatar(userData.avatar);
         setUserName(userData.name);
         setUserDescription(userData.about);
         setCards(cardsArray);
       })
       .catch(err => console.log(err));
-  })
+  }, [])
 
 
   return (
@@ -48,20 +48,20 @@ function Main(props) {
 
 
 
-       <section className="elements">
+      <section className="elements">
         <ul className="elements__list">
-        {cards.map(card => (
-          <Card
-            key={card._id}
-            id={card._id}
-            link={card.link}
-            name={card.name}
-            counter={card.likes.length}
-            onCardClick={props.onCardClick}
-          />
+          {cards.map(card => (
+            <Card
+              key={card._id}
+              id={card._id}
+              link={card.link}
+              name={card.name}
+              counter={card.likes.length}
+              onCardClick={props.onCardClick}
+            />
           ))}
-          </ul>
-        </section> 
+        </ul>
+      </section>
 
 
     </main>
