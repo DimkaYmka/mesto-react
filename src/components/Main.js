@@ -1,6 +1,7 @@
 // import Avatar from '../images/avatar.png'
 import { useEffect, useState } from "react";
 import api from '../utils/Api.js';
+import Card from "./Card.js";
 
 function Main(props) {
 
@@ -11,8 +12,9 @@ function Main(props) {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    api.getUserData()
-      .then(userData => {
+    Promise.all([ api.getUserData(), api.getInitialCards() ])
+      .then(res => {
+        const [ userData, cardsArray ] = res
         setUserAvatar(userData.avatar);
         setUserName(userData.name);
         setUserDescription(userData.about);
