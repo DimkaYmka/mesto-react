@@ -81,47 +81,12 @@ function App() {
       />
 
 
-      {/* <div className="popup popup_profile">
-        <div className="popup__container">
-          <button className="button" type="button">
-            <img src="<%=require('./images/Close.svg')%>" alt="Крест для закрытия" className="popup__close-popup" />
-          </button>
-          <h3 className="popup__title">Редактировать профиль</h3>
-          <form name="form" className="popup__form popup__form-profile" novalidate>
-            <input className="popup__input" id="input-name" minlength="2" maxlength="40" required type="text" name="name"
-              placeholder="Ваше имя" />
-            <span className="popup__input-error input-name-error"></span>
-            <input className="popup__input" id="input-info" minlength="2" maxlength="200" required type="text" name="about"
-              placeholder="Пара слов о себе" />
-            <span className="popup__input-error input-info-error"></span>
-            <button className="popup__button popup__save-btn" type="submit">Сохранить</button>
-          </form>
-        </div>
-      </div> */}
-
-      {/* <div className="popup popup_card">
-        <div className="popup__container">
-          <button className="button" type="button">
-            <img src="<%=require('./images/Close.svg')%>" alt="Крест для закрытия"
-              className="popup__close-popup popup__close-card-popup" />
-          </button>
-          <h3 className="popup__title">Новое место</h3>
-          <form name="form" className="popup__form popup__form-card" noValidate>
-            <input id="input-name-card" className="popup__input popup__input-name" minLength="2" maxLength="30" required
-              type="text" name="name" placeholder="Название" />
-            <span className="popup__input-error input-name-card-error"></span>
-            <input id="input-url" className="popup__input popup__input-link" required type="url" name="link"
-              placeholder="Ссылка" />
-            <span className="popup__input-error input-url-error"></span>
-            <button className="popup__button popup__save-btn" type="submit">Создать</button>
-          </form>
-        </div>
-      </div> */}
+    
 
       <div className="popup popup_image">
         <div className="popup__big">
           <button className="button" type="button">
-            <img src="<%=require('./images/Close.svg')%>" alt="Крест для закрытия"
+            <img src="true" alt="Крест для закрытия"
               className="popup__close-popup popup__close-popup-big" />
           </button>
           <img src="#" alt="" className="popup__big-image" />
@@ -130,42 +95,16 @@ function App() {
       </div>
 
 
-      <template className="card" id="card">
-        <li className="elements__card">
-          <img src="#" alt="" className="elements__image" />
-          <button className="button" type="button">
-            <img src="<%=require('./images/Trash.svg')%>" alt="лайк" className="elements__delete-button elements__delete-button_hidden" />
-          </button>
-          <h2 className="elements__title">#</h2>
-          <button className="button" type="button">
-            <img src="<%=require('./images/Vector.svg')%>" alt="лайк" className="elements__vector" />
-            <span className="elements__likes-number">0</span>
-          </button>
-        </li>
-      </template>
 
-      {/* <div className="popup popup_avatar">
-        <div className="popup__container">
-          <button className="button" type="button">
-            <img src="<%=require('./images/Close.svg')%>" alt="Крест для закрытия"
-              className="popup__close-popup popup__close-card-popup" />
-          </button>
-          <h3 className="popup__title">Обновите аватар</h3>
-          <form name="form" className="popup__form popup__form-avatar" noValidate>
-            <input id="input-url-avatar" className="popup__input popup__input-link" required type="url" name="link"
-              placeholder="Ссылка" />
-            <span className="popup__input-error input-url-avatar-error popup__input-error-avatar"></span>
-            <button className="popup__button popup__save-btn" type="submit">Сохранить</button>
-          </form>
-        </div>
-      </div> */}
+
+    
 
 
 
       <div className="popup popup_delete">
         <div className="popup__container">
           <button className="button" type="button">
-            <img src="<%=require('./images/Close.svg')%>" alt="Крест для закрытия"
+            <img src="true"  alt="Крест для закрытия"
               className="popup__close-popup popup__close-card-popup" />
           </button>
           <form action="#" className="popup__form">
