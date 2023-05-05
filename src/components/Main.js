@@ -6,8 +6,8 @@ import Card from "./Card.js";
 function Main(props) {
 
   const [userName, setUserName] = useState(''),
-        [userDescription, setUserDescription] = useState(''),
-        [userAvatar, setUserAvatar] = useState('');
+    [userDescription, setUserDescription] = useState(''),
+    [userAvatar, setUserAvatar] = useState('');
 
   const [cards, setCards] = useState([]);
 
@@ -52,12 +52,14 @@ function Main(props) {
         <ul className="elements__list">
           {cards.map(card => (
             <Card
+              card={card}
+              onCardClick={props.onCardClick}
               key={card._id}
               id={card._id}
               link={card.link}
               name={card.name}
               counter={card.likes.length}
-              onCardClick={props.onCardClick}
+            // onCardClick={props.onCardClick}
             />
           ))}
         </ul>

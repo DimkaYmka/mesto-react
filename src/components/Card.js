@@ -1,16 +1,16 @@
 import Trash from '../images/Trash.svg'
 import Heart from '../images/Vector.svg'
 
-function Card(card) {
+function Card({ card, onCardClick }) {
 
   const handleClick = () => {
-    card.onCardClick(card);
+    onCardClick(card);
   }
 
   return (
 
     <li className="elements__card">
-      <img  className="elements__image"
+      <img className="elements__image"
         src={card.link}
         alt={card.name}
         onClick={handleClick} />
