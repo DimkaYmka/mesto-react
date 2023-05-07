@@ -1,10 +1,10 @@
 import Trash from '../images/Trash.svg'
 import Heart from '../images/Vector.svg'
 
-function Card({ card, onCardClick }) {
+function Card(card) {
 
   const handleClick = () => {
-    onCardClick(card);
+    card.onCardClick(card);
   }
 
   return (
