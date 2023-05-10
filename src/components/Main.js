@@ -1,45 +1,39 @@
-// import Avatar from '../images/avatar.png'
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import api from '../utils/Api.js';
 import Card from "./Card.js";
 
 function Main(props) {
-
-  const [userName, setUserName] = useState(''),
-    [userDescription, setUserDescription] = useState(''),
-    [userAvatar, setUserAvatar] = useState('');
-
+  const currentUser = useContext(CurrentUserContext);
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    Promise.all([api.getUserData(), api.getInitialCards()])
-      .then(res => {
-        const [userData, cardsArray] = res
-        setUserAvatar(userData.avatar);
-        setUserName(userData.name);
-        setUserDescription(userData.about);
+    api.getInitialCards()
+      .then(cardsArray => {
         setCards(cardsArray);
       })
-      .catch(err => console.log(err));
-  }, [])
+      .catch(err => console.error(err));
+  },[]);
+
+
 
 
   return (
     <main className="content">
       <section className="profile">
         <button className="profile__avatar-button" onClick={props.onEditAvatar}>
-          <img src={userAvatar} alt="аватар" className="profile__avatar" />
+          <img src={currentUser.avatar} alt="аватар" className="profile__avatar" />
         </button>
         <div className="profile__info">
           <div className="profile__container">
-            <h1 className="profile__name">{userName}</h1>
+            <h1 className="profile__name">{currentUser.name}</h1>
             <button type="button" className="profile__edit-button"
               onClick={props.onEditProfile}
             >
 
             </button>
           </div>
-          <p className="profile__text">{userDescription}</p>
+          <p className="profile__text">{currentUser.about}</p>
         </div>
         <button className="profile__add-button" type="button" onClick={props.onAddPlace}>
           {/* <img src="<%=require('./images/Vector2.svg')%>" alt="" className="profile__add-vector-button" /> */}
@@ -58,8 +52,7 @@ function Main(props) {
               id={card._id}
               link={card.link}
               name={card.name}
-              counter={card.likes.length}
-            // onCardClick={props.onCardClick}
+              likes={card.likes}
             />
           ))}
         </ul>

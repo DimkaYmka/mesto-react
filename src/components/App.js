@@ -1,22 +1,31 @@
 
-import { useState } from "react";
+import {useEffect, useState } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 import Main from "./Main";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from './ImagePopup.js';
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import  api  from "../utils/Api";
+// import EditAvatarPopup from "./EditAvatarPopup";
+// import EditProfilePopup from "./EditProfilePopup";
 
 function App() {
 
+  const [currentUser, setCurrentUser] = useState({});
+
+  useEffect(() => {
+    api.getUserData()
+      .then(userData => {
+        setCurrentUser(userData);
+      })
+      .catch(err => console.error(err));
+  },[]);
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-  // const [selectedCard, setSelectedCard] = useState({name: '', link: ''});
-  // console.log(selectedCard)
-  // const [selectedCard, setSelectedCard] = useState(false);
-  // const [selectedCard, setSelectedCard] = useState(null);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -35,24 +44,23 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setSelectedCard(null);
-    // setSelectedCard({name: '', link: ''});
-    // setSelectedCard(false);
-    // setSelectedCard(null);
+
   }
 
   function handleCardClick(card) {
     setSelectedCard(card)
-    
+
   }
 
   return (
+    <CurrentUserContext.Provider value={currentUser}>
     <div className="page">
       <div className="page__container">
         <Header />
         <Main onEditProfile={handleEditProfileClick}
-         onAddPlace={handleAddPlaceClick} 
-         onEditAvatar={handleEditAvatarClick}
-         onCardClick={handleCardClick}/>
+          onAddPlace={handleAddPlaceClick}
+          onEditAvatar={handleEditAvatarClick}
+          onCardClick={handleCardClick} />
         <Footer />
       </div>
 
@@ -94,7 +102,7 @@ function App() {
       <div className="popup popup_delete">
         <div className="popup__container">
           <button className="button" type="button">
-            <img src="true"  alt="Крест для закрытия"
+            <img src="true" alt="Крест для закрытия"
               className="popup__close-popup popup__close-card-popup" />
           </button>
           <form action="#" className="popup__form">
@@ -104,7 +112,7 @@ function App() {
         </div>
       </div>
     </div>
-
+    </CurrentUserContext.Provider>
 
   );
 }
