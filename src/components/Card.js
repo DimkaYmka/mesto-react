@@ -6,14 +6,21 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 function Card(card) {
 
   const currentUser = useContext(CurrentUserContext);
-  const isOwn = currentUser._id === card.id
+  const isOwn = currentUser._id === card.ownerId
   const isLiked = card.likes.some(i => i._id === currentUser._id);
-  const cardLikeButtonClassName = ( 
-    `elements__vector ${isLiked && 'elements__vector_active'}` 
-  );
+  // const cardLikeButtonClassName = (`elements__vector ${isLiked && 'elements__vector_active'}`);
+  const cardLikeButtonClassName = !isLiked ? 'elements__vector' : 'elements__vector elements__vector_active';
 
   const handleClick = () => {
     card.onCardClick(card);
+  }
+
+  function handleLikeClick() {
+    card.onCardLike(card);
+  }
+
+  function handleDeleteClick() {
+    card.onCardDelete(card.id)
   }
 
   return (
@@ -23,12 +30,12 @@ function Card(card) {
         src={card.link}
         alt={card.name}
         onClick={handleClick} />
-     { isOwn && <button className="button" type="button">
-        <img src={Trash} alt="лайк" className="elements__delete-button elements__delete-button_hidden" />
+     { isOwn && <button className="button" type="button" onClick={handleDeleteClick}>
+        <img src={Trash} alt="лайк" className="elements__delete-button" />
       </button>}
       <h2 className="elements__title">{card.name}</h2>
       <button className="button" type="button">
-        <img src={Heart} alt="лайк" className={cardLikeButtonClassName} />
+        <img src={Heart} alt="лайк" onClick={handleLikeClick} className={cardLikeButtonClassName} />
         <span className={'elements__likes-number'}>{card.likes.length}</span>
       </button>
     </li>

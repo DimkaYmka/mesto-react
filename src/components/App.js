@@ -1,5 +1,5 @@
 
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 import Main from "./Main";
@@ -11,16 +11,42 @@ import  api  from "../utils/Api";
 // import EditProfilePopup from "./EditProfilePopup";
 
 function App() {
-
-  const [currentUser, setCurrentUser] = useState({});
+  const [ cards, setCards ] = useState([]);//
+  const [currentUser, setCurrentUser] = useState([]);
 
   useEffect(() => {
-    api.getUserData()
-      .then(userData => {
-        setCurrentUser(userData);
-      })
+
+    Promise.all([ api.getUserData(), api.getInitialCards() ])
+    .then(res => {
+      const [ userData, cardsArray ] = res;
+      setCards(cardsArray);
+      setCurrentUser(userData);
+    })
       .catch(err => console.error(err));
   },[]);
+  
+//   function handleCardLike(card) {
+//     // Снова проверяем, есть ли уже лайк на этой карточке
+//     const isLiked = card.likes.some(i => i._id === currentUser._id);
+    
+//     // Отправляем запрос в API и получаем обновлённые данные карточки
+//     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+//         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+//     });
+// } 
+function handleCardLike(card) {
+  const isLiked = card.likes.some(i => i._id === currentUser._id);
+
+  api.changeLikeCardStatus(isLiked, card.id)
+    .then((newCard) => {
+      setCards((state) => state.map((c) => c._id === card.id ? newCard : c));
+  });
+
+}
+function handleCardDelete(cardId) {
+  api.deleteCard(cardId)
+    .then(() => setCards(cards.filter(c => c._id !== cardId)))
+}
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -60,7 +86,11 @@ function App() {
         <Main onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
-          onCardClick={handleCardClick} />
+          onCardClick={handleCardClick}
+          cards={cards} 
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}/>
+          
         <Footer />
       </div>
 

@@ -1,21 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import api from '../utils/Api.js';
 import Card from "./Card.js";
 
 function Main(props) {
   const currentUser = useContext(CurrentUserContext);
-  const [cards, setCards] = useState([]);
-
-  useEffect(() => {
-    api.getInitialCards()
-      .then(cardsArray => {
-        setCards(cardsArray);
-      })
-      .catch(err => console.error(err));
-  },[]);
-
-
 
 
   return (
@@ -36,7 +24,7 @@ function Main(props) {
           <p className="profile__text">{currentUser.about}</p>
         </div>
         <button className="profile__add-button" type="button" onClick={props.onAddPlace}>
-          {/* <img src="<%=require('./images/Vector2.svg')%>" alt="" className="profile__add-vector-button" /> */}
+
         </button>
       </section>
 
@@ -44,15 +32,18 @@ function Main(props) {
 
       <section className="elements">
         <ul className="elements__list">
-          {cards.map(card => (
+          {props.cards.map(card => (
             <Card
+              ownerId={card.owner._id}
               card={card}
               onCardClick={props.onCardClick}
               key={card._id}
               id={card._id}
               link={card.link}
               name={card.name}
-              likes={card.likes}
+              likes={[...card.likes]}
+              onCardLike={props.onCardLike}
+              onCardDelete={props.onCardDelete}
             />
           ))}
         </ul>
