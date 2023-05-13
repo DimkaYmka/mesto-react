@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup ({isOpen, onClose, onAddPlace}) {
@@ -19,9 +19,14 @@ function handleLinkChange (evt) {
 function handleSubmit (evt) {
   evt.preventDefault();
   onAddPlace({name, link});
+  // setName('');
+  // setLink('');
+}
+
+useEffect(() => {
   setName('');
   setLink('');
-}
+}, [isOpen]);
 
 return (
   <PopupWithForm name='profileEditPopup' title='Новое место' btnText='Создать' isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}

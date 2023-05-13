@@ -31,7 +31,7 @@ function Card(card) {
         alt={card.name}
         onClick={handleClick} />
      { isOwn && <button className="button" type="button" onClick={handleDeleteClick}>
-        <img src={Trash} alt="лайк" className="elements__delete-button" />
+        <img src={Trash} alt="кнопка удаления" className="elements__delete-button" />
       </button>}
       <h2 className="elements__title">{card.name}</h2>
       <button className="button" type="button">

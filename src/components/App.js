@@ -41,13 +41,16 @@ function App() {
     api.changeLikeCardStatus(isLiked, card.id)
       .then((newCard) => {
         setCards((state) => state.map((c) => c._id === card.id ? newCard : c));
-      });
+      })
+      .catch(err => console.log(err));
+    }
 
-  }
+  
   function handleCardDelete(cardId) {
     api.deleteCard(cardId)
       .then(() => setCards(cards.filter(c => c._id !== cardId)))
-  }
+      .catch(err => console.log(err));
+    }
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -85,7 +88,8 @@ function App() {
         setCurrentUser(userData);
         closeAllPopups();
       })
-  }
+      .catch(err => console.log(err));
+    }
 
   const handleUpdateAvatar = (avatarUrl) => {
     api.editUserAvatar(avatarUrl)
@@ -94,6 +98,7 @@ function App() {
         setCurrentUser(userData);
         closeAllPopups();
       })
+      .catch(err => console.log(err));
     }
     const handleAddCard = (cardData) => {
       api.createCard(cardData)
@@ -101,7 +106,8 @@ function App() {
           setCards([newCard, ...cards]);
           closeAllPopups();
         })
-    }
+        .catch(err => console.log(err));
+      }
 
     return (
       <CurrentUserContext.Provider value={currentUser}>

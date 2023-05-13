@@ -37,7 +37,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser]);
+  }, [currentUser, isOpen]);
 
   return (
     <PopupWithForm name='profileEditPopup' title='Редактировать профиль' btnText='Сохранить' isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}
