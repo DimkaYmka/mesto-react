@@ -11,9 +11,15 @@ import EditAvatarPopup from "./EditAvatarPopup";
 import EditProfilePopup from "./EditProfilePopup";
 import AddPlacePopup from "./AddPlacePopup";
 
+import { Navigate, Routes, Route } from 'react-router-dom';
+import Login from './Login';
+import Register from './Register';
+import ProtectedRoute from './ProtectedRoute';
+
 function App() {
   const [cards, setCards] = useState([]);//
   const [currentUser, setCurrentUser] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(true); //false по умолчанию
 
   useEffect(() => {
 
@@ -26,15 +32,7 @@ function App() {
       .catch(err => console.error(err));
   }, []);
 
-  //   function handleCardLike(card) {
-  //     // Снова проверяем, есть ли уже лайк на этой карточке
-  //     const isLiked = card.likes.some(i => i._id === currentUser._id);
 
-  //     // Отправляем запрос в API и получаем обновлённые данные карточки
-  //     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-  //         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-  //     });
-  // } 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
 
@@ -43,14 +41,14 @@ function App() {
         setCards((state) => state.map((c) => c._id === card.id ? newCard : c));
       })
       .catch(err => console.log(err));
-    }
+  }
 
-  
+
   function handleCardDelete(cardId) {
     api.deleteCard(cardId)
       .then(() => setCards(cards.filter(c => c._id !== cardId)))
       .catch(err => console.log(err));
-    }
+  }
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -89,73 +87,84 @@ function App() {
         closeAllPopups();
       })
       .catch(err => console.log(err));
-    }
+  }
 
   const handleUpdateAvatar = (avatarUrl) => {
     api.editUserAvatar(avatarUrl)
-      // console.log(avatarUrl)
       .then(userData => {
         setCurrentUser(userData);
         closeAllPopups();
       })
       .catch(err => console.log(err));
-    }
-    const handleAddCard = (cardData) => {
-      api.createCard(cardData)
-        .then(newCard => {
-          setCards([newCard, ...cards]);
-          closeAllPopups();
-        })
-        .catch(err => console.log(err));
-      }
+  }
+  const handleAddCard = (cardData) => {
+    api.createCard(cardData)
+      .then(newCard => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch(err => console.log(err));
+  }
 
-    return (
-      <CurrentUserContext.Provider value={currentUser}>
-        <div className="page">
-          <div className="page__container">
-            <Header />
-            <Main onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onEditAvatar={handleEditAvatarClick}
-              onCardClick={handleCardClick}
-              cards={cards}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete} />
-
-            <Footer />
-          </div>
-
-          <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-
-          <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddCard} />
-
-          <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-
-          <ImagePopup
-            card={selectedCard}
-            onClose={closeAllPopups}
-          />
-
-
-
-          <div className="popup popup_delete">
-            <div className="popup__container">
-              <button className="button" type="button">
-                <img src="true" alt="Крест для закрытия"
-                  className="popup__close-popup popup__close-card-popup" />
-              </button>
-              <form action="#" className="popup__form">
-                <h3 className="popup__title popup__title-delete">Вы уверены?</h3>
-                <button className="popup__button popup__save-btn popup__button-delete" type="submit">Да</button>
-              </form>
-            </div>
-          </div>
+  return (
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className="page">
+        <div className="page__container">
+          <Header />
+          <Routes>
+            
+            <Route path='/'
+              element={
+                <ProtectedRoute
+                  element={Main}
+                  cards={cards}
+                  onEditAvatar={handleEditAvatarClick}
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onCardClick={handleCardClick}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                  loggedIn={loggedIn}
+                />
+              }
+            />
+            <Route path='/signin' element={<Login />} />
+            <Route path='/signup' element={<Register />} /> 
+          </Routes>
+          {loggedIn && <Footer />}
         </div>
-      </CurrentUserContext.Provider>
 
-    );
-  
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+
+        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddCard} />
+
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
+
+        <ImagePopup
+          card={selectedCard}
+          onClose={closeAllPopups}
+        />
+
+
+
+        {/* <div className="popup popup_delete">
+          <div className="popup__container">
+            <button className="button" type="button">
+              <img src="true" alt="Крест для закрытия"
+                className="popup__close-popup popup__close-card-popup" />
+            </button>
+            <form action="#" className="popup__form">
+              <h3 className="popup__title popup__title-delete">Вы уверены?</h3>
+              <button className="popup__button popup__save-btn popup__button-delete" type="submit">Да</button>
+            </form>
+          </div>
+        </div> */}
+      </div>
+    </CurrentUserContext.Provider>
+
+  );
+
 }
-  export default App;
+export default App;
 
 
