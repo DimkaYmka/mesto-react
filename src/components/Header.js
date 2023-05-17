@@ -9,7 +9,7 @@ function Header() {
         <img src={logo} alt="логотип социальной сети Mesto" className="header__logo" />
       {/* </Link> */}
 
-      {/* <Routes>
+      <Routes>
         <Route path='/signin' element={
           <Link to='/signup' className='header__link'>
             Регистрация
@@ -21,8 +21,8 @@ function Header() {
             Войти
           </Link>
         } />
-
-      </Routes> */}
+ß
+      </Routes>
     </header>
 
 

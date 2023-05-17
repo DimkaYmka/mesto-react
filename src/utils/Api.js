@@ -1,5 +1,6 @@
 const apiOptions = {
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-62',
+  baseAuthUrl: 'https://auth.nomoreparties.co',
   headers: {
     authorization: 'bc440bce-88d2-40de-813f-9186a5211a71',
     'Content-Type': 'application/json'
@@ -10,6 +11,7 @@ class Api {
   constructor(options) {
     this._baseUrl = options.baseUrl;
     this._headers = options.headers;
+    this._baseAuthUrl = options.baseAuthUrl;
   }
 
 
@@ -100,7 +102,7 @@ class Api {
       })
       .then(this._getResponse);
     }
-  
+
 
 }
 
