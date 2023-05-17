@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
-import auth from "../utils/Auth";
+// import auth from "../utils/Auth";
+import * as auth from "../utils/Auth";
 function Register() {
 
   const [formValue, setFormValue] = useState({
@@ -17,9 +18,9 @@ const navigate = useNavigate();
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
-    // const {email, password} = formValue;
+    const {email, password} = formValue;
     console.log(formValue);
-    auth.register( formValue.email,  formValue.password)
+    auth.register( password, email)
   
     .then(data => {
       console.log(data);

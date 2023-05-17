@@ -1,39 +1,39 @@
-const authOptions = {
-  baseUrl: 'https://auth.nomoreparties.co',
-  headers: {
-    Accept: 'application/json',
-    ContentType : 'application/json'
+
+
+export const BASE_URL = "https://auth.nomoreparties.co";
+
+function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
   }
+  return Promise.reject(`Ошибка: ${res.status}`);
 }
 
-class Auth {
-  
-  constructor(options) {
-    this._baseUrl = options.baseUrl;
-    this._headers = options.headers;
+export const register = (password, email) => {
+  return fetch(`${BASE_URL}/signup`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ password, email }),
+  })
+    .then((res) => {
+      return checkResponse(res);
+    })
+
   }
 
-  _getResponse(res) {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-}
-
-  register(email, password) {
-    // console.log(email, password);
-    return fetch(`${this._baseUrl}/signup`, {
-      method: 'POST',
-      headers: this._headers,
-      body: JSON.stringify({email, password})
-    }).then(this._getResponse);
-
-    
-  }
-
-
-}
-
-const auth = new Auth(authOptions);
-
-export default auth
+  export const authorize = (password, email) => {
+    return fetch(`${BASE_URL}/signin`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ password, email }),
+    })
+      .then((res) => {
+        return checkResponse(res);
+      })
+  };

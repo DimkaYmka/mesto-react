@@ -19,7 +19,12 @@ import ProtectedRoute from './ProtectedRoute';
 function App() {
   const [cards, setCards] = useState([]);//
   const [currentUser, setCurrentUser] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(true); //false по умолчанию
+  const [loggedIn, setLoggedIn] = useState(false); //false по умолчанию
+
+  const handleLogin = () => {
+    setLoggedIn(true)
+  }
+
 
   useEffect(() => {
 
@@ -112,7 +117,7 @@ function App() {
         <div className="page__container">
           <Header />
           <Routes>
-            
+
             <Route path='/'
               element={
                 <ProtectedRoute
@@ -128,8 +133,8 @@ function App() {
                 />
               }
             />
-            <Route path='/signin' element={<Login />} />
-            <Route path='/signup' element={<Register />} /> 
+            <Route path='/signin' element={<Login />} setLoggedIn={setLoggedIn} />
+            <Route path='/signup' element={<Register />} />
           </Routes>
           {loggedIn && <Footer />}
         </div>

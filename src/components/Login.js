@@ -1,10 +1,12 @@
 import LoginForm from "./LoginForm";
 
-function Login() {
+function Login({setLoggedIn}) {
+
+  
   return (
 
 
-       <LoginForm />
+       <LoginForm  />
 
   )
 }
