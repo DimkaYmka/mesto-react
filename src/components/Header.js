@@ -1,7 +1,7 @@
 import logo from '../images/header_logo.svg';
 import { Routes, Route, Link } from 'react-router-dom';
 // debugger
-function Header({ userName }) {
+function Header({ userName, onLogout  }) {
 
   return (
     <header className="header">
@@ -10,10 +10,10 @@ function Header({ userName }) {
         {userName && <p className="header__email">{userName}</p>}
         <Routes>
 
-          {/* <Route path="/" element={<Link to="/sign-in" 
+          <Route path="/" element={<Link to="/signin" 
         className="header__logout" 
         onClick={onLogout}>Выйти
-        </Link>}/> */}
+        </Link>}/>
 
           <Route path='/signin' element={
             <Link to='/signup' className='header__link'>

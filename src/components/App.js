@@ -16,7 +16,7 @@ import { useNavigate, Routes, Route } from 'react-router-dom';
 import RegisterForm from './RegisterForm';
 import ProtectedRoute from './ProtectedRoute';
 import LoginForm from "./LoginForm";
-// import InfoTooltip from "./InfoTooltip";
+import InfoTooltip from "./InfoTooltip";
 import * as auth from "../utils/Auth";
 
 function App() {
@@ -24,7 +24,11 @@ function App() {
   const [currentUser, setCurrentUser] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false); //false по умолчанию
   const [userName, setUser] = useState('');
+
+
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const [isInfoTooltipSuccess, setIsInfoTooltipSuccess] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -122,10 +126,12 @@ function App() {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
       auth.getContent(jwt)
-        .then(userName => {
+        .then(({ data }) => {
           // setLoggedIn(true);
-          handleLogin(userName)
-          navigate('/')
+          setLoggedIn(true);
+          setUser(data.email);
+          handleLogin(data.email)
+          navigate('/', {replace: true})
         })
         .catch(err => console.log(err));
     }
@@ -135,12 +141,19 @@ function App() {
     tokenCheck();
   }, []);
 
+  const handleLogout = () => {
+    setLoggedIn(false);
+    setUser("");
+    localStorage.removeItem("jwt");
+};
+
+
   // debugger
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
-          <Header userName={userName} />
+          <Header userName={userName} onLogout={handleLogout} />
           <Routes>
 
             <Route path='/'
@@ -162,11 +175,13 @@ function App() {
             />
             <Route path='/signin' element={
               <div >
-                <LoginForm setLoggedIn={setLoggedIn} handleLogin={handleLogin} onInfoTooltipOpen={setIsInfoTooltipOpen} />
+                <LoginForm setLoggedIn={setLoggedIn} handleLogin={handleLogin} onInfoTooltipOpen={setIsInfoTooltipOpen}   setUser={setUser}
+                  />
               </div>} />
             <Route path='/signup' element={<div >
-              <RegisterForm onInfoTooltipOpen={setIsInfoTooltipOpen}/>
+              <RegisterForm onInfoTooltipOpen={setIsInfoTooltipOpen} setUser={setUser}/>
             </div>} />
+            
           </Routes>
           {loggedIn && <Footer />}
         </div>
@@ -182,10 +197,13 @@ function App() {
           onClose={closeAllPopups}
         />
 
-        {/* <InfoTooltip
-          isOpenStatus={isInfoTooltipOpen}
+        <InfoTooltip
+          isOpen={isInfoTooltipOpen}
           onClose={closeAllPopups}
-        /> */}
+          isSuccess={isInfoTooltipSuccess}
+ 
+          // error={error}
+        />
 
 
 
