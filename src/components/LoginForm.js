@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import * as auth from "../utils/Auth";
 
 
-function LoginForm({ setLoggedIn }) {
+function LoginForm({ setLoggedIn, handleLogin, onInfoTooltipOpen }) {
   const [formValue, setFormValue] = useState({
     email: '',
     password: '',
@@ -31,13 +31,16 @@ function LoginForm({ setLoggedIn }) {
         if (data.token) {
           localStorage.setItem('jwt', data.token);
           setLoggedIn(true)
-          // setUserEmail(userData.email)
+          // setUser(formValue.email)
+          handleLogin(formValue.email)
           navigate("/");
         }
-
         // navigate("/", { replace: true })
       })
+      .then(() => onInfoTooltipOpen({ isOpen: true, status: false }))
       .catch(err => console.log(err));
+
+      
 
   }
   return (

@@ -1,14 +1,18 @@
-.header__link {
+.login__link {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+
   color: white;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
-  font-size: 18px;
-  line-height: 22px;
+  font-size: 14px;
+  line-height: 17px;
   text-decoration: none;
   transition: opacity .3s ease-in-out;
 }
 
-.header__link:hover {
+.login__link:hover {
   opacity: .5;
 }

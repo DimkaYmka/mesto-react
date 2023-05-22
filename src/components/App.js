@@ -11,20 +11,21 @@ import EditAvatarPopup from "./EditAvatarPopup";
 import EditProfilePopup from "./EditProfilePopup";
 import AddPlacePopup from "./AddPlacePopup";
 
-import { Navigate, Routes, Route } from 'react-router-dom';
-import Login from './Login';
-import Register from './Register';
+import { useNavigate, Routes, Route } from 'react-router-dom';
+
+import RegisterForm from './RegisterForm';
 import ProtectedRoute from './ProtectedRoute';
+import LoginForm from "./LoginForm";
+// import InfoTooltip from "./InfoTooltip";
+import * as auth from "../utils/Auth";
 
 function App() {
   const [cards, setCards] = useState([]);//
   const [currentUser, setCurrentUser] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false); //false по умолчанию
-
-  const handleLogin = () => {
-    setLoggedIn(true)
-  }
-
+  const [userName, setUser] = useState('');
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -111,11 +112,35 @@ function App() {
       .catch(err => console.log(err));
   }
 
+
+  const handleLogin = (userName) => {
+    setLoggedIn(true)
+    setUser(userName)
+  }
+
+  const tokenCheck = () => {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      auth.getContent(jwt)
+        .then(userName => {
+          // setLoggedIn(true);
+          handleLogin(userName)
+          navigate('/')
+        })
+        .catch(err => console.log(err));
+    }
+  }
+
+  useEffect(() => {
+    tokenCheck();
+  }, []);
+
+  // debugger
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
-          <Header />
+          <Header userName={userName} />
           <Routes>
 
             <Route path='/'
@@ -130,11 +155,18 @@ function App() {
                   onCardLike={handleCardLike}
                   onCardDelete={handleCardDelete}
                   loggedIn={loggedIn}
+
+
                 />
               }
             />
-            <Route path='/signin' element={<Login />} setLoggedIn={setLoggedIn} />
-            <Route path='/signup' element={<Register />} />
+            <Route path='/signin' element={
+              <div >
+                <LoginForm setLoggedIn={setLoggedIn} handleLogin={handleLogin} onInfoTooltipOpen={setIsInfoTooltipOpen} />
+              </div>} />
+            <Route path='/signup' element={<div >
+              <RegisterForm onInfoTooltipOpen={setIsInfoTooltipOpen}/>
+            </div>} />
           </Routes>
           {loggedIn && <Footer />}
         </div>
@@ -149,6 +181,11 @@ function App() {
           card={selectedCard}
           onClose={closeAllPopups}
         />
+
+        {/* <InfoTooltip
+          isOpenStatus={isInfoTooltipOpen}
+          onClose={closeAllPopups}
+        /> */}
 
 
 

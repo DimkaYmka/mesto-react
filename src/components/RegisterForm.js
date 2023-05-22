@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 // import auth from "../utils/Auth";
 import * as auth from "../utils/Auth";
-function Register() {
+function Register(onInfoTooltipOpen) {
 
   const [formValue, setFormValue] = useState({
     email: '',
@@ -26,6 +26,7 @@ const navigate = useNavigate();
       console.log(data);
       navigate("/signin", { replace: true })
     })
+    .then(() => onInfoTooltipOpen({ isOpen: true, status: false }))
     .catch(err => console.log(err));
     
   }
@@ -42,7 +43,7 @@ const navigate = useNavigate();
         <span className="login__input-error input-url-login-error "></span>
         <button className="login__button" type="submit">Зарегестрироваться</button>
       </form>
-      <a href="/signin" className="register-form__link">Уже зарегистрированы? Войти</a>
+      <a href="/signin" className="login__link">Уже зарегистрированы? Войти</a>
     </div>
   )
 }
