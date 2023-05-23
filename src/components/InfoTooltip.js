@@ -3,59 +3,29 @@ import iconError from '../images/Error.svg';
 import ClosePopup from '../images/Close.svg';
 
 
-//   function InfoTooltip({ isOpen, onClose, error }) {
-
-//   return (
-//     <div className={isOpen ? "popup popup_opened" : "popup"} >
-//       <div className="popup__container">
-
-//         <img src={ClosePopup} alt='close'>
-//         <button className="button" type="button" onClick={onClose}/>
-//         </img>
-          // <img
-          //   src={error ? iconError : iconDone}
-          //   alt={
-          //     error ? 'Регистрация прошла успешно' : 'Регистрация не прошла'
-          //   }
-          //   className="popup__signup-icon"
-          // />
-//           <h2 className="popup__signup-title">
-//             {error
-//               ? 'Что-то пошло не так! Попробуйте ещё раз.'
-//               : 'Вы успешно зарегистрировались!'}
-//           </h2>
-//       </div>
-//     </div>
-//   )
-// }
-// export default InfoTooltip
 
 
 
-function InfoTooltip({ onClose, isOpen, isSuccess }) {
+
+function InfoTooltip({ onClose, isOpenConfig }) {
   return (
-    <div className={`popup  ${isOpen ? "popup_opened" : ""}`}>
+    <section
+      className={`popup ${isOpenConfig.isOpen ? 'popup_opened' : ''}`}
+      onClick={({ target }) => {
+        if (target.classList.contains('popup_opened') || target.classList.contains('popup__close-button')) {
+          onClose();
+        }
+      }}>
       <div className="popup__container">
-
-          <button className="button popup__close-button" type="button" onClick={onClose} />
-  
-        <img
-            src={isSuccess ? iconError : iconDone}
-            alt={
-              isSuccess ? 'Регистрация прошла успешно' : 'Регистрация не прошла'
-            }
-            className="popup__signup-icon"
-          />
-
-        <h2
-          className="popup__title">
-          {isSuccess
-            ? "Вы успешно зарегистрировались!"
-            : "Что-то пошло не так! Попробуйте еще раз."}
-        </h2>
+      <button className="button" type="button" onClick={onClose}>
+          <img src={ClosePopup} alt="Крест для закрытия"
+            className="popup__close-popup popup__close-card-popup" />
+        </button>
+        <img src={isOpenConfig.status ? iconDone : iconError} className="info-tooltip__image" alt=""></img>
+        <p className="info-tooltip__text">{isOpenConfig.status ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}</p>
       </div>
-    </div>
-  );
+    </section>
+  )
 }
 
 export default InfoTooltip

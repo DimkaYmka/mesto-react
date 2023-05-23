@@ -8,7 +8,6 @@ function Card(card) {
   const currentUser = useContext(CurrentUserContext);
   const isOwn = currentUser._id === card.ownerId
   const isLiked = card.likes.some(i => i._id === currentUser._id);
-  // const cardLikeButtonClassName = (`elements__vector ${isLiked && 'elements__vector_active'}`);
   const cardLikeButtonClassName = !isLiked ? 'elements__vector' : 'elements__vector elements__vector_active';
 
   const handleClick = () => {

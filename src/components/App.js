@@ -27,7 +27,6 @@ function App() {
 
 
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
-  const [isInfoTooltipSuccess, setIsInfoTooltipSuccess] = useState(false);
 
   const navigate = useNavigate();
 
@@ -81,6 +80,7 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
+    setIsInfoTooltipOpen(false)
     setSelectedCard(null);
 
   }
@@ -127,7 +127,6 @@ function App() {
     if (jwt) {
       auth.getContent(jwt)
         .then(({ data }) => {
-          // setLoggedIn(true);
           setLoggedIn(true);
           setUser(data.email);
           handleLogin(data.email)
@@ -148,7 +147,7 @@ function App() {
 };
 
 
-  // debugger
+  
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -198,27 +197,12 @@ function App() {
         />
 
         <InfoTooltip
-          isOpen={isInfoTooltipOpen}
+           isOpenConfig={isInfoTooltipOpen}
           onClose={closeAllPopups}
-          isSuccess={isInfoTooltipSuccess}
- 
-          // error={error}
+
         />
 
 
-
-        {/* <div className="popup popup_delete">
-          <div className="popup__container">
-            <button className="button" type="button">
-              <img src="true" alt="Крест для закрытия"
-                className="popup__close-popup popup__close-card-popup" />
-            </button>
-            <form action="#" className="popup__form">
-              <h3 className="popup__title popup__title-delete">Вы уверены?</h3>
-              <button className="popup__button popup__save-btn popup__button-delete" type="submit">Да</button>
-            </form>
-          </div>
-        </div> */}
       </div>
     </CurrentUserContext.Provider>
 

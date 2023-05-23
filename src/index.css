@@ -70,5 +70,9 @@
 @import url(./blocks/login/__input-error/login__form-error.css);
 @import url(./blocks/login/__link/login__link.css);
 
+@import url(./blocks/info-tooltip/__image/info-tooltip__image.css);
+@import url(./blocks/info-tooltip/__text/info-tooltip__text.css);
+
 @import url(./blocks/footer/footer.css);
 @import url(./blocks/footer/__text/footer__text.css);
+

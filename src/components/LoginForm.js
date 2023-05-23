@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
-// import auth from "../utils/Auth";
 import * as auth from "../utils/Auth";
 
 
@@ -13,16 +12,11 @@ function LoginForm({ setLoggedIn, handleLogin, onInfoTooltipOpen, setUser }) {
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
-    // setFormValue(() => ({ ...formValue, [name]: value }))
     setFormValue({ ...formValue, [name]: value })
   }
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-
-    // if(!formValue.email || !formValue.password) {
-    //   return;
-    // }
     const { email, password } = formValue;
     console.log(formValue);
     auth.authorize(password, email)
@@ -36,10 +30,11 @@ function LoginForm({ setLoggedIn, handleLogin, onInfoTooltipOpen, setUser }) {
           handleLogin(formValue.email)
           navigate("/", { replace: true });
         }
-        // navigate("/", { replace: true })
       })
-      .then(() => onInfoTooltipOpen({ isOpen: true, status: false }))
-      .catch(err => console.log(err));
+      .catch((err) => {
+        onInfoTooltipOpen({ isOpen: true, status: false });
+        console.log(err);
+      })
 
       
 

@@ -1,6 +1,6 @@
 import logo from '../images/header_logo.svg';
 import { Routes, Route, Link } from 'react-router-dom';
-// debugger
+
 function Header({ userName, onLogout  }) {
 
   return (
